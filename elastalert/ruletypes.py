@@ -1225,12 +1225,12 @@ class PercentageMatchRule(BaseAggregationRule):
 
     def check_matches(self, timestamp, query_key, aggregation_data):
         match_bucket_count = aggregation_data['percentage_match_aggs']['buckets']['match_bucket']['doc_count']
-        other_bucket_count = aggregation_data['percentage_match_aggs']['buckets']['_other_']['doc_count']
+        total_bucket_count = aggregation_data['doc_count']
 
-        if match_bucket_count is None or other_bucket_count is None:
+        if match_bucket_count is None or total_bucket_count is None:
             return
         else:
-            total_count = other_bucket_count + match_bucket_count
+            total_count = total_bucket_count
             if total_count == 0 or total_count < self.min_denominator:
                 return
             else:
